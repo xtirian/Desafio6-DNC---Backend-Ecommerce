@@ -1,0 +1,73 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "Desafio 6 - DNC---Backend-Ecommerce",
+        "description": "Projeto criado para atender o desafio enviado pela DNC como parte do processo de aprendizado"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:4000",
+            "description": "Develop Server."
+        },
+        {
+            "url": "",
+            "description": "Production Server."
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "summary": "resumo",
+                "description": "descrição",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "Descrição",
+                "summary": "Resumo",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "Nome",
+                        "type": "object",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "filters": {
+                                    "Data undefined": "Couldn't handle this request.",
+                                    "Invalid Data": "You can't make this request for the 'Data Name: ${data}'."
+                                }
+                            }
+                        }
+                    }
+                },
+                "definitions": {
+                    "Nome da Definição": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "other name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["name", "other name"]
+                    }
+                }
+            }
+        }
+    }
+}
