@@ -1,5 +1,5 @@
 {
-  "name": "Desafio 6 - DNC---Backend-Ecommerce",
+  "name": "desafio-6-dnc-backend-ecommerce",
   "version": "1.0.0",
   "description": "Projeto criado para atender o desafio enviado pela DNC como parte do processo de aprendizado",
   "main": "server.ts",
