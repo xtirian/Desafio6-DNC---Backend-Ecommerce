@@ -1,7 +1,7 @@
 {
-  "name": "Desafio6-DNC---Backend-Ecommerce",
+  "name": "Desafio 6 - DNC---Backend-Ecommerce",
   "version": "1.0.0",
-  "description": "Projeto criado para atender o desafio enviado pela DNC como parte do processo de aprendizado ",
+  "description": "Projeto criado para atender o desafio enviado pela DNC como parte do processo de aprendizado",
   "main": "server.ts",
   "repository": "https://github.com/xtirian/Desafio6-DNC---Backend-Ecommerce.git",
   "author": "xTirian <tirianx@yahoo.com>",
@@ -11,11 +11,19 @@
     "build": "tsc"
   },
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "ts-dotenv": "^0.9.1"
+    "morgan": "^1.10.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "@types/swagger-ui-express": "^4.1.6",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"

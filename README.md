@@ -8,4 +8,4 @@ Projeto criado para atender o desafio enviado pela DNC como parte do processo de
 ## Workflow
 1. Criar projeto
 2. Configurar para Typescript
-3. 
+3. Configurar Swagger
