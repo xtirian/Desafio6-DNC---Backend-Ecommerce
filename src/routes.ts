@@ -1,11 +1,16 @@
-import { Express, Router } from 'express';
+import { Express, Router } from "express";
+import CustomerRoute from './routes/customer.route'
 
-function routes(server:Express):void {
-  
-  const userRouter: Router = require('./routes/customer.ts');
-  server.use('/users', userRouter);
+function routes(server: Express): void {
+  try {
+    
 
-  return;
+    server.use("/customer", CustomerRoute);
+
+    return;
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 export default routes;
