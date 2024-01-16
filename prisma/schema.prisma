@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Customer {
+  id    Int     @id @default(autoincrement())
+  email String  @unique
+  name  String?
+
+  sales Sale[]
+}
+
+model Product {
+  id       Int     @id @default(autoincrement())
+  name     String
+  price    Decimal
+  cost     Decimal
+  quantity Int
+
+  operations   Operation[] @relation("OperationToProduct")
+  stockEntries Stock[]     @relation("StockToProduct")
+}
+
+model Operation {
+  id        Int     @id @default(autoincrement())
+  type      String // Here we creating the info which says if this operations is a sale or a purchase. This will be important for the stock control
+  productId Int
+  product   Product @relation("OperationToProduct", fields: [productId], references: [id])
+
+  sales     Sale[]     @relation("OperationToProduct")
+  purchases Purchase[] @relation("OperationToProduct")
+  stockEntry Stock[]
+}
+
+model Sale {
+  id Int @id @default(autoincrement())
+
+  customerId Int
+  customer   Customer @relation(fields: [customerId], references: [id])
+
+  operationId Int
+  operation   Operation @relation("OperationToProduct", fields: [operationId], references: [id])
+
+  totalPrice Decimal
+}
+
+model Purchase {
+  id Int @id @default(autoincrement())
+
+  // Here could enter the supplier id and infos if we have a table for suppliers and creating the relation between then
+
+  operationId Int
+  operation   Operation @relation("OperationToProduct", fields: [operationId], references: [id])
+
+  totalCost Decimal
+}
+
+model Stock {
+  id          Int       @id @default(autoincrement())
+  productId   Int
+  product     Product   @relation("StockToProduct", fields: [productId], references: [id])
+  operationId Int
+  operation   Operation @relation(fields: [operationId], references: [id])
+  quantity    Int
+}
