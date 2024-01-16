@@ -20,13 +20,17 @@ server.use(express_1.default.static(path_1.default.join(__dirname, "public"))); 
 const PORT = process.env.PORT;
 const swaggerOptions = { customCssUrl: "swagger-ui.css" };
 const swagger_output_json_1 = __importDefault(require("./doc/swagger_output.json"));
+const routes_1 = __importDefault(require("./routes"));
 if (process.env.NODE_ENV) {
     server.get("/", (req, res) => {
         /**#swagger.ignore=true */ res.redirect("/doc");
     });
     server.use("/doc", authDoc_1.default, swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_output_json_1.default, swaggerOptions));
 }
-server.get('/', (req, res) => {
-    res.json({ message: 'hello world with Typescript' });
+server.get("/", (req, res) => {
+    res.json({ message: "hello world with Typescript" });
 });
-server.listen(PORT, () => 'server running on port 3333');
+(0, routes_1.default)(server);
+if (process.env.NODE_ENV) {
+    server.listen(PORT, () => "server running on port 3333");
+}
