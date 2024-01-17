@@ -9,7 +9,12 @@ const router = Router();
 
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const customer = await prisma.customer.findMany();
+    const customer = await prisma.customer.findMany({
+      select: {
+        name: true,
+        email:true
+      }
+    });
 
     if (!customer.length) {
       res.status(500).send({
@@ -25,7 +30,6 @@ router.get("/", async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof PrismaExc.PrismaClientKnownRequestError) {
       res.status(500);
-
       throw error;
     }
   }
