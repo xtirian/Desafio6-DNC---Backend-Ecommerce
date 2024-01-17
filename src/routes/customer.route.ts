@@ -23,13 +23,17 @@ router.get("/", async (req: Request, res: Response) => {
       return;
     }
   } catch (error) {
-    console.error(error);
+    if (error instanceof PrismaExc.PrismaClientKnownRequestError) {
+      res.status(500);
 
-    return;
+      throw error;
+    }
   }
 });
 
-router.get("/:customerId", async (req: Request, res: Response) => {
+//GET WITH ID
+
+router.get("/account/:customerId", async (req: Request, res: Response) => {
   try {
     const { customerId } = req.params;
 
@@ -49,9 +53,11 @@ router.get("/:customerId", async (req: Request, res: Response) => {
       res.status(200).send(customer);
     }
   } catch (error) {
-    console.error(error);
+    if (error instanceof PrismaExc.PrismaClientKnownRequestError) {
+      res.status(500);
 
-    return;
+      throw error;
+    }
   }
 });
 
@@ -119,6 +125,134 @@ router.post("/", async (req: Request, res: Response) => {
     }
 
     return;
+  }
+});
+
+
+// PUT TO UPDATE NAME AND EMAIL
+router.put("/", async (req: Request, res: Response) => {
+  const { email, name } = req.body;
+
+  //can only update the name and e-mail with this route
+  const customer = await prisma.customer.update({
+    where: {
+      email: email,
+    },
+    data: {
+      email: email,
+      name: name,
+    },
+  });
+});
+
+
+// PUT TO UPDATE THE PASSWORD
+router.put("/password/:customerId", async (req: Request, res: Response) => {
+  const { customerId } = req.params;
+  const { oldPassword, newPassword } = req.body;
+
+  const getCustomer = await CustomerController.GetUserById(Number(customerId));
+
+  if (!getCustomer) {
+    res.status(404).send({
+      message: "customer not found",
+    });
+  }
+
+  const bdPassword = getCustomer?.password;
+
+  const checkOldPassword = () =>
+    bdPassword && bcrypt.compareSync(oldPassword, bdPassword);
+
+  // ENCRYPTING THE PASSWORD
+
+  if (checkOldPassword()) {
+    const saltRounds = 12;
+
+    const hash = bcrypt.hashSync(newPassword, saltRounds);
+
+    // Change the password
+
+    try {
+      await prisma.customer.update({
+        where: {
+          id: Number(customerId),
+        },
+        data: {
+          password: hash,
+        },
+      });
+
+      res.status(200).send({
+        message: "Customer updated succefully",
+        data: {
+          name: getCustomer?.name,
+          email: getCustomer?.email,
+        },
+      });
+
+      return;
+    } catch (error) {
+      if (error instanceof PrismaExc.PrismaClientKnownRequestError) {
+        res.status(500).send({
+          message: "Internal Server Error",
+          error: error.code,
+        });
+
+        throw error;
+      }
+
+      return;
+    }
+  }
+});
+
+
+
+//DELETE
+router.delete("/account/:customerId", async (req: Request, res: Response) => {
+  const { customerId } = req.params;
+  const { password } = req.body;
+
+  const getCustomer = await CustomerController.GetUserById(Number(customerId));
+
+  if (!getCustomer) {
+    res.status(404).send({
+      message: "customer not found",
+    });
+  }
+
+  const bdPassword = getCustomer?.password;
+
+  const checkOldPassword = () =>
+    bdPassword && bcrypt.compareSync(password, bdPassword);
+
+  // ENCRYPTING THE PASSWORD
+  if (checkOldPassword()) {
+    try {
+      await prisma.customer.delete({
+        where: {
+          id: Number(customerId),
+        },
+      });
+
+      res.status(200).send({
+        message: "Customer deleted succefully",
+      });
+
+      return;
+    } catch (error) {
+      if (error instanceof PrismaExc.PrismaClientKnownRequestError) {
+        res.status(500).send({
+          message: "Internal Server Error",
+          error: error.code,
+        });
+
+        throw error;
+      }
+
+      return;
+    }
   }
 });
 
