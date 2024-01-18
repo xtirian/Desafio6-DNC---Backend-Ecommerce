@@ -163,8 +163,20 @@ router.delete("/:productId/delete", async (req: Request, res: Response) => {
 
   const { productId } = req.params;
 
+  const productCheck  = await ProductController.GetProductById(Number(productId));
+
+  if(!productCheck){
+    res.status(400).send({
+      message: "The product ID doesn't exist"
+    })
+
+    return;
+  }
+
   try {
-    await prisma.product.delete({where:{id: Number(productId)}})
+    const deleteProduct = await prisma.product.delete({where:{id: Number(productId)}})
+
+    res.status(200).send({message: `Product ${deleteProduct?.name} deleted`})
     
   } catch (error) {
     if (error instanceof PrismaExc.PrismaClientInitializationError) {
