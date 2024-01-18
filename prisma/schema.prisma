@@ -31,38 +31,40 @@ model Product {
 }
 
 model Operation {
-  id        Int     @id @default(autoincrement())
-  type      String // Here we creating the info which says if this operations is a sale or a purchase. This will be important for the stock control
+  id        Int       @id @default(autoincrement())
+  type      String    // Aqui estamos criando a informação que indica se esta operação é uma venda ou uma compra. Isso será importante para o controle de estoque
+  quantity  Int
   productId Int
-  product   Product @relation("OperationToProduct", fields: [productId], references: [id])
+  product   Product   @relation("OperationToProduct", fields: [productId], references: [id])
 
-  sales     Sale[]     @relation("OperationToProduct")
-  purchases Purchase[] @relation("OperationToProduct")
+  sales     Sale[]     @relation("SaleToOperation")
+  purchases Purchase[] @relation("PurchaseToOperation")
   stockEntry Stock[]
 }
 
 model Sale {
-  id Int @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
 
-  customerId Int
-  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId   Int
+  customer     Customer @relation(fields: [customerId], references: [id])
 
-  operationId Int
-  operation   Operation @relation("OperationToProduct", fields: [operationId], references: [id])
+  operationId  Int
+  operation    Operation @relation("SaleToOperation", fields: [operationId], references: [id])
 
-  totalPrice Decimal
+  totalPrice   Decimal
 }
 
 model Purchase {
-  id Int @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
 
-  // Here could enter the supplier id and infos if we have a table for suppliers and creating the relation between then
+  // Aqui pode entrar o ID do fornecedor e informações, se tivermos uma tabela para fornecedores, criando a relação entre eles
 
-  operationId Int
-  operation   Operation @relation("OperationToProduct", fields: [operationId], references: [id])
+  operationId  Int
+  operation    Operation @relation("PurchaseToOperation", fields: [operationId], references: [id])
 
-  totalCost Decimal
+  totalCost    Decimal
 }
+
 
 model Stock {
   id          Int       @id @default(autoincrement())
