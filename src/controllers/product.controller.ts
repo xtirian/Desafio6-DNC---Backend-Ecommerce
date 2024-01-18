@@ -41,4 +41,28 @@ export class ProductController {
 
     return;
   }
+
+  static async UpdateProductQuantity(productId:number, name:string, cost:Decimal, price:Decimal, quantity:number){
+
+    
+
+    try {
+      await prisma.product.update({
+        where: {
+          id: productId,
+        },
+        data: {
+          name: name,
+          cost: cost,
+          price: price,
+          quantity: quantity,
+        },
+      });
+
+      return;
+    } catch (error) {
+      throw error
+    }
+  
+}
 }

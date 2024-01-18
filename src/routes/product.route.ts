@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Router, Request, Response } from "express";
 import { prisma, PrismaExc } from "../utils/prisma";
 import { ProductController } from "../controllers/product.controller";
 
@@ -123,18 +123,18 @@ router.put("/:productId/update", async (req: Request, res: Response) => {
     return;
   }
 
-
   if (!quantity) {
     quantity = savedProduct?.quantity;
   }
 
   try {
-    await prisma.product.update({
-      where: {
-        id: Number(productId),
-      },
-      data: { name: name, price: price, cost: cost, quantity: quantity },
-    });
+    await ProductController.UpdateProductQuantity(
+      Number(productId),
+      name,
+      cost,
+      price,
+      quantity
+    );
 
     res.status(200).send({
       message: `Product ${savedProduct?.name} updated to ${name}`,
@@ -152,40 +152,39 @@ router.put("/:productId/update", async (req: Request, res: Response) => {
       res.status(500).send({ message: "Couldn't handle the request." });
     }
 
-
-    throw error
+    throw error;
   }
 });
 
-
 //DELETE
 router.delete("/:productId/delete", async (req: Request, res: Response) => {
-
   const { productId } = req.params;
 
-  const productCheck  = await ProductController.GetProductById(Number(productId));
+  const productCheck = await ProductController.GetProductById(
+    Number(productId)
+  );
 
-  if(!productCheck){
+  if (!productCheck) {
     res.status(400).send({
-      message: "The product ID doesn't exist"
-    })
+      message: "The product ID doesn't exist",
+    });
 
     return;
   }
 
   try {
-    const deleteProduct = await prisma.product.delete({where:{id: Number(productId)}})
+    const deleteProduct = await prisma.product.delete({
+      where: { id: Number(productId) },
+    });
 
-    res.status(200).send({message: `Product ${deleteProduct?.name} deleted`})
-    
+    res.status(200).send({ message: `Product ${deleteProduct?.name} deleted` });
   } catch (error) {
     if (error instanceof PrismaExc.PrismaClientInitializationError) {
       res.status(500).send({ message: "Couldn't handle the request." });
     }
 
-    throw error
+    throw error;
   }
-  
 });
 
 export default router;
