@@ -27,7 +27,6 @@ model Product {
   quantity Int
 
   operations   Operation[] @relation("OperationToProduct")
-  stockEntries Stock[]     @relation("StockToProduct")
 }
 
 model Operation {
@@ -37,9 +36,11 @@ model Operation {
   productId Int
   product   Product   @relation("OperationToProduct", fields: [productId], references: [id])
 
-  sales     Sale[]     @relation("SaleToOperation")
-  purchases Purchase[] @relation("PurchaseToOperation")
-  stockEntry Stock[]
+  // saleId Int 
+  // sales     Sale     @relation(fields: [saleId], references: [id])
+
+  // purchaseId   Int
+  // purchase     Purchase @relation(fields: [purchaseId], references: [id])
 }
 
 model Sale {
@@ -48,8 +49,7 @@ model Sale {
   customerId   Int
   customer     Customer @relation(fields: [customerId], references: [id])
 
-  operationId  Int
-  operation    Operation @relation("SaleToOperation", fields: [operationId], references: [id])
+  operations   String
 
   totalPrice   Decimal
 }
@@ -57,20 +57,8 @@ model Sale {
 model Purchase {
   id           Int      @id @default(autoincrement())
 
-  // Aqui pode entrar o ID do fornecedor e informações, se tivermos uma tabela para fornecedores, criando a relação entre eles
-
-  operationId  Int
-  operation    Operation @relation("PurchaseToOperation", fields: [operationId], references: [id])
+  
+  operations   String
 
   totalCost    Decimal
-}
-
-
-model Stock {
-  id          Int       @id @default(autoincrement())
-  productId   Int
-  product     Product   @relation("StockToProduct", fields: [productId], references: [id])
-  operationId Int
-  operation   Operation @relation(fields: [operationId], references: [id])
-  quantity    Int
 }
