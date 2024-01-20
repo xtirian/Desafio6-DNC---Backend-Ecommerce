@@ -12,7 +12,7 @@ router.get("/", async (req: Request, res: Response) => {
     const customer = await prisma.customer.findMany({
       select: {
         name: true,
-        email:true
+        email:true,
       }
     });
 
@@ -46,6 +46,11 @@ router.get("/account/:customerId", async (req: Request, res: Response) => {
         where: {
           id: Number(customerId),
         },
+        select: {
+          name: true,
+          email:true,
+          sales: true
+        }
       });
 
       if (!customer) {
