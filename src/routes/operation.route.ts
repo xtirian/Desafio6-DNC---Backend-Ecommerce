@@ -6,7 +6,7 @@ import { OperationController } from "../controllers/operation.controller";
 const router = Router();
 
 //CREATE
-router.post("/create/", async (req: Request, res: Response) => {
+router.post("/create", async (req: Request, res: Response) => {
   const { type, quantity, productId } = req.body;
 
   // check type operation
@@ -68,11 +68,15 @@ router.post("/create/", async (req: Request, res: Response) => {
       );
     }
 
-    res.status(200).send({
+    res.status(201).send({
       message: "Operation created!",
       data: {
+        id: createOperation.id,
         product: checkProduct.name,
+        productId: createOperation.productId,
         quantity: quantity,
+        price: checkProduct.price,
+        cost: checkProduct.cost
       },
     });
 

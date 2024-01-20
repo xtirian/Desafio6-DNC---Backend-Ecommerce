@@ -1,6 +1,14 @@
-import { Decimal } from "@prisma/client/runtime/library";
-import { prisma } from "../utils/prisma";
+import axios from "axios";
+import { PrismaExc, prisma } from "../utils/prisma";
 import { ProductController } from "./product.controller";
+import { Request, Response } from "express";
+
+interface productListInterface {
+  products: {
+    id: number;
+    quantity: number;
+  }[];
+}
 
 export class OperationController {
   static CheckPorductAvaliability(
@@ -48,8 +56,8 @@ export class OperationController {
         originalQuantityofProduct
       );
 
-      if(!newQuantityCheck){
-        return false
+      if (!newQuantityCheck) {
+        return false;
       }
 
       if (newQuantityCheck) {
@@ -76,8 +84,8 @@ export class OperationController {
         originalQuantityofProduct
       );
 
-      if(!newQuantityCheck){
-        return false
+      if (!newQuantityCheck) {
+        return false;
       }
 
       await prisma.product.update({
