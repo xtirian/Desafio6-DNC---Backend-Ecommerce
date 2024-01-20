@@ -53,18 +53,41 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 router.get("/", async (req: Request, res: Response) => {
   const product = await prisma.product.findMany({
     select: {
+      id: true,
       name: true,
       price: true,
+      cost: true,
       quantity: true,
+      operations: true,
     },
   });
 
-  console.log(product);
+  res.status(200).send(product);
+});
+
+// GET PRODUCT BY ID
+router.get("/:productId", async (req: Request, res: Response) => {
+  const {productId} = req.params;
+
+  const product = await prisma.product.findMany({
+    where:{
+      id: Number(productId)
+    },
+    select: {
+      id: true,
+      name: true,
+      price: true,
+      cost: true,
+      quantity: true,
+      operations: true,
+    },
+  });
+
   res.status(200).send(product);
 });
 
 //GET PRODUCTS BY NAME
-router.get("/name/:productName", async (req: Request, res: Response) => {
+router.get("/name=:productName", async (req: Request, res: Response) => {
   let { productName } = req.params;
 
   productName = productName.replace(/-/g, " ");
@@ -75,6 +98,14 @@ router.get("/name/:productName", async (req: Request, res: Response) => {
         name: {
           contains: productName,
         },
+      },
+      select: {
+        id: true,
+        name: true,
+        price: true,
+        cost: true,
+        quantity: true,
+        operations: true,
       },
     });
 
