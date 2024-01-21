@@ -142,7 +142,7 @@ router.put("/:operationId/update", async (req: Request, res: Response) => {
       },
     });
 
-    res.status(200).send({ message: "operation umpdated succefully" });
+    res.status(200).send({ message: "operation updated succefully" });
   } catch (error) {
     res.status(500).send(error);
 

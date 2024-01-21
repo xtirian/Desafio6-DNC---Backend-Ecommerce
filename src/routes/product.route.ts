@@ -18,7 +18,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
 
   if (productCheck?.length) {
     res.status(400).send({
-      message: "produto já existe",
+      message: "product already exist",
     });
   }
 
@@ -41,7 +41,7 @@ router.post("/", async (req: Request, res: Response): Promise<void> => {
   } catch (error) {
     if (error instanceof PrismaExc.PrismaClientKnownRequestError) {
       res.status(500).send({
-        message: "Couldn't handle the request.",
+        message: "Internal error",
       });
 
       throw error;

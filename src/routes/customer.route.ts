@@ -95,7 +95,7 @@ router.post("/", async (req: Request, res: Response) => {
   const userCheck = await CustomerController.CheckUserByEmail(email);
 
   if (userCheck) {
-    res.status(400).send({ message: "The user already exist." });
+    res.status(400).send({ message: "The Customer already exist." });
 
     return;
   }

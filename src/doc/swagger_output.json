@@ -7,19 +7,215 @@
   },
   "servers": [
     {
-      "url": "http://localhost:4000",
+      "url": "http://localhost:8080",
       "description": "Develop Server."
     },
     {
-      "url": "",
+      "url": "https://desafio6dnc.onrender.com",
       "description": "Production Server."
     }
   ],
   "paths": {
-    "/": {
+    "/customer": {
       "get": {
-        "summary": "resumo",
+        "summary": "Retorna todos os clientes",
+        "tags": ["Customer"],
         "description": "descrição",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      },
+
+      "post": {
+        "description": "Criação de Clientes",
+        "summary": "Criação de Clientes",
+        "tags": ["Customer"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Customer",
+            "type": "object",
+            "example": {
+              "name": "cliente 1",
+              "email": "email@email.com",
+              "password": "123"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Customer created succefully"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Data": {
+                    "summary": "We couldn't continue without the e-mail and password."
+                  },
+                  "Customer Already Exist": {
+                    "summary": "Customer already exist"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "description": "Atualização de Clientes",
+        "summary": "Atualização do nome ou email do cliente",
+        "tags": ["Customer"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Customer",
+            "type": "object",
+            "example": {
+              "name": "cliente 1",
+              "email": "email@email.com"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Customer created succefully"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Data": {
+                    "summary": "We couldn't continue without the e-mail and password."
+                  },
+                  "Customer Already Exist": {
+                    "summary": "Customer already exist"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/customer/account/:customerId": {
+      "get": {
+        "summary": "Puxa informações de um único usuário",
+        "tags": ["Customer"],
+        "description": "descrição",
+        "parameters": [
+          {
+            "in": "parames",
+            "name": "customerId",
+            "type": "string",
+            "example": "http://localhost:8080/customer/account/1",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Can't find this user in our Database"
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      },
+      "delete":{
+        "summary": "Deleta um único usuário",
+        "tags": ["Customer"],
+        "description": "Deleta um usuário",
+        "parameters": [
+          {
+            "in": "parames",
+            "name": "customerId",
+            "type": "string",
+            "example": "http://localhost:8080/customer/account/1",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer deleted succefully"
+          },
+          "404": {
+            "description": "customer not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/customer/password/:customerId": {
+      "put": {
+        "description": "Atualização de Clientes",
+        "summary": "Atualização de Clientes",
+        "tags": ["Customer"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Customer",
+            "type": "object",
+            "example": {
+              "password": "1234"
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Customer"
+          },
+          "404": {
+            "description": "customer not found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/product": {
+      "get": {
+        "summary": "Retorna todos os produtos. É possivel retornar um produto por ID e um ou mais com o nome do produto na query",
+        "tags": ["Product"],
+        "description": "descrição",
+        "parameters": [
+          {
+            "in": "params",
+            "name": "customerId",
+            "type": "string",
+            "example": "http://localhost:8080/product/1/",
+            "required": false
+          },
+          {
+            "in": "params",
+            "name": "productName",
+            "type": "string",
+            "example": "http://localhost:8080/product/name=chave-de-fenda",
+            "required": false
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -29,43 +225,400 @@
 
       "post": {
         "description": "Descrição",
-        "summary": "Resumo",
+        "summary": "Criação de produtos no banco de dados",
+        "tags": ["Product"],
         "parameters": [
           {
             "in": "body",
-            "name": "Nome",
+            "name": "Customer",
             "type": "object",
+            "example": {
+              "name": "name",
+              "type": "sale or purchase",
+              "cost": 0.99,
+              "price": 2.99,
+              "quantity": 1
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Product ${name} created sucessfully."
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Quantity": {
+                    "summary": "can't handle this request."
+                  },
+                  "Product Already Exist": {
+                    "summary": "product already exist"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal error"
+          }
+        }
+      }
+    },
+    "/:productId/update": {
+      "put": {
+        "summary": "Atualiza produto",
+        "tags": ["Product"],
+        "description": "descrição",
+        "parameters": [
+          {
+            "in": "params",
+            "name": "productId",
+            "type": "string",
+            "example": "http://localhost:8080/product/1/",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "productName",
+            "type": "string",
+            "example": {
+              "name": "Produto 1",
+              "price": 2.99,
+              "cost": 0.97,
+              "quantity": 10
+            },
             "required": true
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "filters": {
-                  "Data undefined": "Couldn't handle this request.",
-                  "Invalid Data": "You can't make this request for the 'Data Name: ${data}'."
+          }
+        },
+        "400": {
+          "description": "Bad Request",
+          "content": {
+            "application/json": {
+              "examples": {
+                "Invalid Product": {
+                  "summary": "Can't find this product in our database"
+                },
+                "Already Exist A product with this name": {
+                  "summary": "the name already exist, please, choose other name"
                 }
               }
             }
           }
         },
-        "definitions": {
-          "Nome da Definição": {
-            "type": "object",
-            "properties": {
-              "name": {
-                "type": "string"
-              },
-              "other name": {
-                "type": "string"
-              }
+        "500": {
+          "description": "Couldn't handle the request."
+        }
+      }
+    },
+    "/:productId/delete": {
+      "delete": {
+        "summary": "Atualiza produto",
+        "tags": ["Product"],
+        "description": "descrição",
+        "parameters": [
+          {
+            "in": "params",
+            "name": "productId",
+            "type": "string",
+            "example": "http://localhost:8080/product/1/",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Product ${deleteProduct?.name} deleted"
+          }
+        },
+        "400": {
+          "description": "The product ID doesn't exist"
+        },
+        "500": {
+          "description": "Couldn't handle the request."
+        }
+      }
+    },
+    "/operation": {
+      "get": {
+        "summary": "Responsavel pela relação entre vendas e compras com os produtos",
+        "tags": ["Operation"],
+        "description": "Responsavel pela relação entre vendas e compras com os produtos, quantidades e valores gerados em cada compra ou venda",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+
+      "post": {
+        "description": "Responsavel pela criação de operações e movimentação no estoque. Esta operação irá checar se o produto existe na base de dados, se a quantidade disponível atende ao pedido e se estiver okay, irá atualizar o estoque do produto",
+        "summary": "Responsavel pela criação de operações.",
+        "tags": ["Operation"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Creating Operation",
+            "example": {
+              "type": "sale",
+              "quantity": 2,
+              "productId": 5
             },
-            "required": ["name", "other name"]
+            "type": "string",
+            "required": true
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Operation created!"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Wrong Type": {
+                    "summary": "types alloweds are 'sale' or 'purchase'."
+                  },
+                  "Invalid Product": {
+                    "summary": "Couldn't find the product in our database. Check the id."
+                  },
+                  "Quantity check": {
+                    "summary": "This operation exceed the quantity avaliable in the stock."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/operation/:operationId/update": {
+      "put": {
+        "description": "responsável pela atualização das operações. Eventualmente irá devolver ou remover do estoque as quantidades referentes à operação",
+        "summary": "Responsavel pela criação de operações.",
+        "tags": ["Operation"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Updating Operation",
+            "example": {
+              "newQuantity": 2
+            },
+            "type": "string",
+            "required": true
+          },
+          {
+            "in": "params",
+            "name": "operationId",
+            "example": "http://localhost:8080/operation/2/update",
+            "type": " number",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "operation updated succefully"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Data": {
+                    "summary": "Can't find the operation, verify the Id you want."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/operation/:operationId/delete": {
+      "delete": {
+        "description": "Responsável por deletar uma operação. Eventualmente irá devolver ou remover do estoque as quantidades referentes à operação",
+        "summary": "Responsavel pela criação de operações.",
+        "tags": ["Operation"],
+        "parameters": [
+          {
+            "in": "params",
+            "name": "operationId",
+            "example": "http://localhost:8080/operation/2/delete",
+            "type": "number",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "operation updated succefully"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "Invalid Data": {
+                    "summary": "Can't find the operation, verify the Id you want."
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/purchase": {
+      "get": {
+        "summary": "Controle de COMPRAS geradas, podendo ser de um ou mais produtos diversos",
+        "tags": ["Purchase"],
+        "description": "descrição",
+        "parameters": [
+          {
+            "in": "params",
+            "name": "purchaseId",
+            "type": "string",
+            "example": "http://localhost:8080/purchase/1",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": "the server couldn't handle this request"
+        }
+      }
+    },
+    "/purchase/:customerId/create": {
+      "post": {
+        "summary": "Criação de COMPRAS, podendo ser de um ou mais produtos diversos",
+        "description": "As COMPRAS criadas são armazenadas por FORNECEDOR",
+        "tags": ["Purchase"],
+        "parameters": [
+          {
+            "in": "params",
+            "name": "customerId",
+            "type": "string",
+            "example": "http://localhost:8080/purchase/3/create",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "products",
+            "type": "object",
+            "required": true,
+            "example": {
+              "products": [
+                {
+                  "id": 1,
+                  "quantity": 1
+                },
+                {
+                  "id": 2,
+                  "quantity": 1
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Can't handle the operation with this products"
+          },
+          "404": {
+            "description": "This customer doesn't have an account"
+          },
+          "500": {
+            "description": "The server couldn't handle this request"
+          }
+        }
+      }
+    },
+    "/sale": {
+      "get": {
+        "summary": "Controle de vendas geradas, podendo ser de um ou mais produtos diversos",
+        "tags": ["Sale"],
+        "description": "descrição",
+        "parameters": [
+          {
+            "in": "params",
+            "name": "saleId",
+            "type": "string",
+            "example": "http://localhost:8080/sale/1",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": "the server couldn't handle this request"
+        }
+      }
+    },
+    "/sale/:customerId/create": {
+      "post": {
+        "summary": "Criação de vendas, podendo ser de um ou mais produtos diversos",
+        "description": "As vendas criadas são armazenadas por cliente",
+        "tags": ["Sale"],
+        "parameters": [
+          {
+            "in": "params",
+            "name": "customerId",
+            "type": "string",
+            "example": "http://localhost:8080/sale/3/create",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "products",
+            "type": "object",
+            "required": true,
+            "example": {
+              "products": [
+                {
+                  "id": 1,
+                  "quantity": 1
+                },
+                {
+                  "id": 2,
+                  "quantity": 1
+                }
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Can't handle the operation with this products"
+          },
+          "404": {
+            "description": "This customer doesn't have an account"
+          },
+          "500": {
+            "description": "The server couldn't handle this request"
           }
         }
       }
