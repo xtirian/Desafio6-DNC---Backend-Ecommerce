@@ -7,18 +7,230 @@
     },
     "servers": [
         {
-            "url": "http://localhost:4000",
+            "url": "http://localhost:8080",
             "description": "Develop Server."
         },
         {
-            "url": "",
+            "url": "https://desafio6dnc.onrender.com",
             "description": "Production Server."
         }
     ],
     "paths": {
-        "/": {
+        "/customer": {
             "get": {
                 "summary": "resumo",
+                "description": "descrição",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "Descrição",
+                "summary": "Resumo",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "Nome",
+                        "type": "object",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "filters": {
+                                    "Data undefined": "Couldn't handle this request.",
+                                    "Invalid Data": "You can't make this request for the 'Data Name: ${data}'."
+                                }
+                            }
+                        }
+                    }
+                },
+                "definitions": {
+                    "Nome da Definição": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "other name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["name", "other name"]
+                    }
+                }
+            }
+        },
+        "/product": {
+            "get": {
+                "summary": "resumo",
+                "description": "descrição",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "Descrição",
+                "summary": "Resumo",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "Nome",
+                        "type": "object",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "filters": {
+                                    "Data undefined": "Couldn't handle this request.",
+                                    "Invalid Data": "You can't make this request for the 'Data Name: ${data}'."
+                                }
+                            }
+                        }
+                    }
+                },
+                "definitions": {
+                    "Nome da Definição": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "other name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["name", "other name"]
+                    }
+                }
+            }
+        },
+        "/operation": {
+            "get": {
+                "summary": "resumo",
+                "description": "descrição",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "Descrição",
+                "summary": "Resumo",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "Nome",
+                        "type": "object",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "filters": {
+                                    "Data undefined": "Couldn't handle this request.",
+                                    "Invalid Data": "You can't make this request for the 'Data Name: ${data}'."
+                                }
+                            }
+                        }
+                    }
+                },
+                "definitions": {
+                    "Nome da Definição": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "other name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["name", "other name"]
+                    }
+                }
+            }
+        },
+        "/purchase": {
+            "get": {
+                "summary": "resumo",
+                "description": "descrição",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+            "post": {
+                "description": "Descrição",
+                "summary": "Resumo",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "Nome",
+                        "type": "object",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "filters": {
+                                    "Data undefined": "Couldn't handle this request.",
+                                    "Invalid Data": "You can't make this request for the 'Data Name: ${data}'."
+                                }
+                            }
+                        }
+                    }
+                },
+                "definitions": {
+                    "Nome da Definição": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "other name": {
+                                "type": "string"
+                            }
+                        },
+                        "required": ["name", "other name"]
+                    }
+                }
+            }
+        },
+        "/sale": {
+            "get": {
+                "summary": "Criação e Controle de vendas geradas, podendo ser de um ou mais produtos diversos",
                 "description": "descrição",
                 "responses": {
                     "200": {

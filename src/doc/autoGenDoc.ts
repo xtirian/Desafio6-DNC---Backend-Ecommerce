@@ -1,14 +1,14 @@
-import path from "path";
 import swaggerAutogen from "swagger-autogen";
+import path from 'path';
 
 swaggerAutogen({
   openapi: "3.0.0",
   language: "pt-BR",
 });
 
-const outputFile = "./swagger-output.json"; // Here I'm pointing where is created the documentation
+const outputFile = "./doc/swagger-output.json"; // Here I'm pointing where is created the documentation
 
-const endpointsFiles = [path.join("../src/server.ts")]; // In this array I'm poiting to the routes of our project. I need to put here th file where I coordinate the routes
+const endpointsFiles = [path.join('./src/server.ts')]; // In this array I'm poiting to the routes of our project. I need to put here th file where I coordinate the routes
 
 
 const doc = {
@@ -32,5 +32,5 @@ const doc = {
 }; // this function calls for doc update
 
 swaggerAutogen()(outputFile, endpointsFiles, doc).then(() => {
-  require("../server.ts");
+  require('../server')
 });

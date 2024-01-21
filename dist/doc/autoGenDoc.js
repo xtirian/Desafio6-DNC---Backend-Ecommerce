@@ -10,7 +10,7 @@ const swagger_autogen_1 = __importDefault(require("swagger-autogen"));
     language: "pt-BR",
 });
 const outputFile = "./swagger-output.json"; // Here I'm pointing where is created the documentation
-const endpointsFiles = [path_1.default.join("../src/server.ts")]; // In this array I'm poiting to the routes of our project. I need to put here th file where I coordinate the routes
+const endpointsFiles = [path_1.default.join("../src/server.js")]; // In this array I'm poiting to the routes of our project. I need to put here th file where I coordinate the routes
 const doc = {
     info: {
         version: "1.0.0",
@@ -31,5 +31,5 @@ const doc = {
     produces: ["application/json"],
 }; // this function calls for doc update
 (0, swagger_autogen_1.default)()(outputFile, endpointsFiles, doc).then(() => {
-    require("../server.ts");
+    require("../server.js");
 });
