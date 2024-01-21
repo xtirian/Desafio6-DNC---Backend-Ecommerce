@@ -34,3 +34,4 @@ server.get("/", (req, res) => {
 if (process.env.NODE_ENV) {
     server.listen(PORT, () => "server running on port 3333");
 }
+exports.default = server;

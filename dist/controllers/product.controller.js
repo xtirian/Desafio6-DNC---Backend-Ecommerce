@@ -9,36 +9,57 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CustomerController = void 0;
+exports.ProductController = void 0;
 const prisma_1 = require("../utils/prisma");
-class CustomerController {
-    static CheckUserByEmail(email) {
+class ProductController {
+    static CheckProductExist(name) {
         return __awaiter(this, void 0, void 0, function* () {
-            const oldUser = yield prisma_1.prisma.customer.findUnique({
+            const productExist = yield prisma_1.prisma.product.findMany({
                 where: {
-                    email: email,
+                    name: name,
                 },
             });
-            if (oldUser) {
-                return oldUser;
+            if (productExist) {
+                return productExist;
             }
             else {
                 return;
             }
         });
     }
-    static GetUserById(id) {
+    static GetProductById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            const oldUser = yield prisma_1.prisma.customer.findUnique({
+            const savedProduct = yield prisma_1.prisma.product.findUnique({
                 where: {
                     id: id,
                 },
             });
-            if (!oldUser) {
+            if (savedProduct) {
+                return savedProduct;
+            }
+            return;
+        });
+    }
+    static UpdateProductQuantity(productId, name, cost, price, quantity) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                yield prisma_1.prisma.product.update({
+                    where: {
+                        id: productId,
+                    },
+                    data: {
+                        name: name,
+                        cost: cost,
+                        price: price,
+                        quantity: quantity,
+                    },
+                });
                 return;
             }
-            return oldUser;
+            catch (error) {
+                throw error;
+            }
         });
     }
 }
-exports.CustomerController = CustomerController;
+exports.ProductController = ProductController;

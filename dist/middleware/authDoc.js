@@ -14,10 +14,10 @@ function authDocProducao(req, res, next) {
         const { host } = req.headers;
         const { senha } = req.body;
         if (host !== undefined) {
-            if (host.includes("localhost")) {
-                // if the dom is localhost, the server dont ask for the password
-                return next();
-            }
+            /* if (host.includes("localhost")) {
+               // if the dom is localhost, the server dont ask for the password
+               return next();
+             }*/
             //O usuario digitou a senha certa
             if (senha === process.env.SWAGGER_SENHA_DOC ||
                 req.originalUrl !== "/doc/") {
